@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body {
+    height: 80%;
+    color: white;
+    font-family: Arial, sans-serif;
+    background-color: whitesmoke;
+  }
+ 
+  .container {
+    display: flex;
+    height: 100%;
+  }
+ 
+  .profile-section {
+    background-image: url('cover.jpeg');
+    background-size: cover;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+ 
+  .profile-section img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 20px;
+  }
+ 
+  .profile-section p {
+    margin: 10px 0;
+  }
+ 
+  .notes-section {
+    width: 50%;
+    background-color: white;
+    color: black;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+  }
+ 
+  .note {
+    margin-bottom: 20px;
+  }
+ 
+  .note h3 {
+    margin-top: 0;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="profile-section">
+      <h2>Nyan Lin - Vms Student</h2>
+      <img src="pf.jpeg" alt="Garris Profile">
+      <p>I am Gojo Satoru. Oh yeah!</p>
+      <p>Email: u64@au.edu</p>
+    </div>
+    <div class="notes-section">
+      <div class="note">
+        <h3>Satoru</h3>
+        <p>Gojo is a generational talent in the Jujutsu world. It is believed that when Gojo was born, the world itself shifted.</p>
+      </div>
+      <div class="note">
+        <h3>Personality</h3>
+        <p>playful, cocky, and strategic.confident in his skills and abilities, a determined person who believes that he is unstoppable</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
