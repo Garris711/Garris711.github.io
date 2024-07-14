@@ -1,42 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import './App.css';
 
-function App(){
-  const [count, setCount] = useState(0)
-  const [a,setA] = useState(1)
-  const [vat,setVat] = useState(0)
+function App() {
+  const [price, setPrice] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [grossPrice, setGrossPrice] = useState(0);
+  const [vat, setVat] = useState(0);
 
-
-function addA() {
-  setInterval(a+1)
-  console.log(a)
-}
-function handle(e){
-  let p = e.target.value
-  console.log(p)
-  let v= p * 0.07
-  setVat(v)
-}
-  return (
-    <>
-<h2>Price</h2>
-<input type="number" 
-onChange={handle}
-style={{fontSize: '20pt'}}/>
-      <p>Vat = {vat}</p>
-      <p>A = {a}</p>
-
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <br />
-      </div>
-    </>
-  )
+  function handlePriceChange(e) {
+    let p = parseFloat(e.target.value);
+    setPrice(p);
+    let gp = p - discount;
+    setGrossPrice(gp);
+    setVat(parseFloat(gp * 0.07).toFixed(2))
   }
 
+  function handleDiscountChange(e) {
+    let d = parseFloat(e.target.value);
+    setDiscount(d);
+    let gp = price - d;
+    setGrossPrice(gp);
+    setVat(parseFloat(gp * 0.07).toFixed(2))
+  }
 
-export default App
+  return (
+    <div>
+      <h2>Price</h2>
+      <input 
+        type="number" 
+        value={price}
+        onChange={handlePriceChange}
+      />
+      <h2>Discount</h2>
+      <input 
+        type="number" 
+        value={discount}
+        onChange={handleDiscountChange}
+      />
+      <p>Gross Price = {grossPrice}</p>
+      <p>VAT = {vat}</p>
+    </div>
+  );
+}
+
+export default App;
