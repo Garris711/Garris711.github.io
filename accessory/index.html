@@ -2,76 +2,92 @@
 <html>
 <head>
     <title>Car Accessories</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="../css/global.css">
     <!-- Include jQuery library -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <style>
-        /* Example styles for the table */
-        table {
-            width: 60%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-        tfoot td {
-            font-weight: bold;
-        }
-    </style>
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1>Car Accessories</h1>
- 
-    <form id="accessoryForm">
-        <label for="accessory">Select an accessory:</label>
-        <select id="accessory">
-            <option value="100">Car Cover</option>
-            <option value="200">Floor Mats</option>
-            <option value="105">Seat Covers</option>
-            <option value="50">Phone Holder</option>
-        </select>
- 
-        <label for="amount">Amount:</label>
-        <input type="number" id="amount" min="1" value="1">
- 
-        <button type="button" id="addToProductList">Add</button>
-    </form>
- 
-    <table id="productList">
-        <thead>
-            <tr>
-                <th>Accessory</th>
-                <th>Amount</th>
-                <th>Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Product list items will be added here dynamically -->
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="2">Total Price:</td>
-                <td id="totalPrice">0.00</td>
-            </tr>
-            <tr>
-                <td colspan="2">VAT Amount (7%):</td>
-                <td id="vatAmount">0.00</td>
-            </tr>
-            <tr>
-                <td colspan="2">Net Amount:</td>
-                <td id="netAmount">0.00</td>
-            </tr>
-        </tfoot>
-    </table>
- 
+    <div class="container mt-5">
+        <h1>Car Accessories</h1>
+
+        <button id="openModalBtn" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Item</button>
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Accessory</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="accessoryForm">
+                            <div class="form-group">
+                                <label for="accessory">Select an accessory:</label>
+                                <select id="accessory" class="form-control">
+                                    <option value="100">Car Cover</option>
+                                    <option value="200">Floor Mats</option>
+                                    <option value="105">Seat Covers</option>
+                                    <option value="50">Phone Holder</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="amount">Amount:</label>
+                                <input type="number" id="amount" class="form-control" min="1" value="1">
+                            </div>
+                            <button type="button" id="addToProductList" class="btn btn-primary">Add</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table id="productList" class="table table-striped mt-4">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Accessory</th>
+                    <th>Amount</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Product list items will be added here dynamically -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2">Total Price:</td>
+                    <td id="totalPrice">0.00</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="2">VAT Amount (7%):</td>
+                    <td id="vatAmount">0.00</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="2">Net Amount:</td>
+                    <td id="netAmount">0.00</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
     <script>
         $(document).ready(function() {
             var totalPrice = 0;
             var vatRate = 0.07; // 7% VAT
- 
+
+            // Add item to the product list
             $("#addToProductList").on("click", function() {
                 var accessorySelect = $("#accessory");
                 var accessoryOption = accessorySelect.find("option:selected");
@@ -79,29 +95,49 @@
                 var accessoryPrice = parseFloat(accessoryOption.val());
                 var amountInput = $("#amount");
                 var amount = parseInt(amountInput.val());
- 
+
                 var newRow = $("<tr></tr>");
                 newRow.append("<td>" + accessoryName + "</td>");
                 newRow.append("<td>" + amount + "</td>");
                 newRow.append("<td>" + (accessoryPrice * amount).toFixed(2) + "</td>");
- 
+                newRow.append('<td><button class="btn btn-danger delete-btn">Delete</button></td>');
+
                 $("#productList tbody").append(newRow);
- 
+
                 // Update the total price
                 totalPrice += accessoryPrice * amount;
-                $("#totalPrice").text(totalPrice.toFixed(2));
- 
-                // Calculate and update the VAT and Net Amount
-                var vatAmount = totalPrice * vatRate;
-                var netAmount = totalPrice + vatAmount;
- 
-                $("#vatAmount").text(vatAmount.toFixed(2));
-                $("#netAmount").text(netAmount.toFixed(2));
- 
+                updateTotals();
+
                 // Reset form fields
                 amountInput.val(1);
                 accessorySelect.val(accessorySelect.find("option:first").val());
+
+                // Hide the modal after adding the item
+                $('#myModal').modal('hide');
             });
+
+            // Delete item from the product list
+            $("#productList").on("click", ".delete-btn", function() {
+                var row = $(this).closest("tr");
+                var price = parseFloat(row.find("td:nth-child(3)").text());
+
+                totalPrice -= price;
+                row.remove();
+
+                // Update the total price
+                updateTotals();
+            });
+
+            function updateTotals() {
+                $("#totalPrice").text(totalPrice.toFixed(2));
+
+                // Calculate and update the VAT and Net Amount
+                var vatAmount = totalPrice * vatRate;
+                var netAmount = totalPrice + vatAmount;
+
+                $("#vatAmount").text(vatAmount.toFixed(2));
+                $("#netAmount").text(netAmount.toFixed(2));
+            }
         });
     </script>
 </body>
